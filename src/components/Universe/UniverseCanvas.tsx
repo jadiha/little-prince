@@ -7,9 +7,7 @@ import StarParticles from './StarParticles'
 import LoggedStars from './LoggedStars'
 import Asteroid from './Asteroid'
 import GoalPlanet from './GoalPlanet'
-import StoryPlanet from './StoryPlanet'
 import { useAppStore } from '@/store/appStore'
-import { STORY_PLANETS } from '@/data/storyPlanets'
 
 export default function UniverseCanvas() {
   const goals = useAppStore((s) => s.goals)
@@ -43,7 +41,7 @@ export default function UniverseCanvas() {
       />
 
       {/* Background stars (static) */}
-      <StarParticles count={2000} />
+      <StarParticles count={150} />
 
       {/* User's earned stars */}
       <LoggedStars />
@@ -59,11 +57,6 @@ export default function UniverseCanvas() {
           goalIndex={i}
           totalGoals={goals.length}
         />
-      ))}
-
-      {/* Story planets from the book — outer ring */}
-      {STORY_PLANETS.map((planet) => (
-        <StoryPlanet key={planet.id} planet={planet} />
       ))}
 
       {/* Post-processing */}

@@ -55,6 +55,13 @@
       display: none !important;
     }
   }
+
+  /* Offset page content to start after the sidebar on desktop */
+  @media (min-width: 768px) {
+    .page-sidebar-inset {
+      padding-left: 210px !important;
+    }
+  }
 }
 
 /* ─── Shooting Star Animation ──────────────────────────────────────────────── */

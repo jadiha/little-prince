@@ -2,7 +2,6 @@ import { motion } from 'framer-motion'
 import { useAppStore, selectIsGoalTendedToday, selectDaysSinceTended } from '@/store/appStore'
 import { getStyleById } from '@/data/goalPlanetStyles'
 import type { Goal } from '@/types'
-import { format, formatDistanceToNow } from 'date-fns'
 
 function GoalCard({ goal }: { goal: Goal }) {
   const style = getStyleById(goal.planetStyle)
@@ -124,10 +123,10 @@ export default function MyGoalsPage() {
         inset: 0,
         overflowY: 'auto',
         background: 'linear-gradient(160deg, #080612 0%, #0d0a1f 60%, #080612 100%)',
-        zIndex: 20,
+        zIndex: 35,
       }}
     >
-      <div style={{
+      <div className="page-sidebar-inset" style={{
         maxWidth: '680px',
         margin: '0 auto',
         padding: '80px 24px 60px',

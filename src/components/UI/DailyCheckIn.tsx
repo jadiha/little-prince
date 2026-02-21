@@ -10,6 +10,7 @@ export default function DailyCheckIn() {
   const closeCheckIn = useAppStore((s) => s.closeCheckIn)
   const logDay = useAppStore((s) => s.logDay)
   const selectGoalPlanet = useAppStore((s) => s.selectGoalPlanet)
+  const activeView = useAppStore((s) => s.activeView)
   const { callPrince } = usePrince()
 
   const [note, setNote] = useState('')
@@ -22,7 +23,10 @@ export default function DailyCheckIn() {
 
   const handleClose = () => {
     closeCheckIn()
-    selectGoalPlanet(null)
+    // Only navigate back to universe if check-in was opened from the 3D planet view
+    if (activeView === 'goalPlanet') {
+      selectGoalPlanet(null)
+    }
     setNote('')
     setLogged(false)
   }
