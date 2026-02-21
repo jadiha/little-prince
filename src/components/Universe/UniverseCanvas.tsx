@@ -7,6 +7,7 @@ import StarParticles from './StarParticles'
 import LoggedStars from './LoggedStars'
 import Asteroid from './Asteroid'
 import GoalPlanet from './GoalPlanet'
+import DistantUniversePlanets from './DistantUniversePlanets'
 import { useAppStore } from '@/store/appStore'
 
 export default function UniverseCanvas() {
@@ -58,6 +59,9 @@ export default function UniverseCanvas() {
           totalGoals={goals.length}
         />
       ))}
+
+      {/* Distant universe — the 6 planets the Little Prince visited, far away */}
+      <DistantUniversePlanets />
 
       {/* Post-processing */}
       <EffectComposer>

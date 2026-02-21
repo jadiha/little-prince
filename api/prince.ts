@@ -4,6 +4,45 @@ import type { PrinceRequest, RoseState, StoryPlanetId } from '../src/types'
 
 export const config = { runtime: 'edge' }
 
+// ─── Fallback responses — used when no API key is configured ──────────────────
+// The Prince always has something to say.
+
+const FALLBACKS: Record<string, string[]> = {
+  morning: [
+    "Good morning. I have been watching over your stars while you slept.",
+    "You have returned. That, I think, is the most important thing.",
+    "My rose needs tending every day. Yours does too. That is the whole secret.",
+    "It is a strange thing — how returning to the same place can feel like arriving somewhere new.",
+    "The stars are all still there. And so are you.",
+  ],
+  afterLog: [
+    "You showed up. That is everything. A star has been released.",
+    "It is the time you devoted to your goal that makes it so important.",
+    "One more star in your sky. You earned it with your returning.",
+    "This is how a sky fills — one small act at a time. I have seen it.",
+    "You tended what matters. The rose noticed.",
+  ],
+  storyPlanet: [
+    "I remember that one. He was a very strange grown-up. They all were.",
+    "All grown-ups were once children. But very few of them remember it.",
+    "On my travels I met many people who had forgotten something essential. Perhaps you will remember it for them.",
+    "It is only with the heart that one can see rightly. What is essential is invisible to the eye.",
+    "I wondered about that planet for a long time after I left.",
+  ],
+  weeklyFox: [
+    "To tame something is to take time with it. You are learning how.",
+    "What is essential is invisible to the eye. You are beginning to see it.",
+    "The fox taught me that you become responsible for what you tame. Be gentle with yourself.",
+    "You are unique in all the world — to those you have tamed, and to those who have tamed you.",
+    "It is the time you have given that makes everything meaningful.",
+  ],
+}
+
+function pickFallback(context: string): string {
+  const options = FALLBACKS[context] ?? FALLBACKS.morning
+  return options[Math.floor(Math.random() * options.length)]
+}
+
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 })
@@ -13,9 +52,9 @@ export default async function handler(req: Request): Promise<Response> {
   const { context, goals, roseState, totalStars, payload } = body
 
   const apiKey = process.env.ANTHROPIC_API_KEY
-  if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'API key not configured' }), {
-      status: 500,
+  // If no key is set (or still the placeholder), return a beautiful fallback
+  if (!apiKey || apiKey === 'your-api-key-here') {
+    return new Response(JSON.stringify({ message: pickFallback(context) }), {
       headers: { 'Content-Type': 'application/json' },
     })
   }
@@ -40,8 +79,8 @@ export default async function handler(req: Request): Promise<Response> {
     })
   } catch (err) {
     console.error('Claude API error:', err)
-    return new Response(JSON.stringify({ error: 'API unavailable' }), {
-      status: 500,
+    // Even on API failure, return a graceful prince response
+    return new Response(JSON.stringify({ message: pickFallback(context) }), {
       headers: { 'Content-Type': 'application/json' },
     })
   }
