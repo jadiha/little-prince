@@ -59,19 +59,29 @@ export default function WeeklyFox({ isOpen, onClose }: Props) {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', stiffness: 260, damping: 28 }}
           >
-            <div className="parchment rounded-3xl p-7">
-              {/* Fox header */}
-              <div className="text-center mb-5">
-                <p className="text-xs tracking-widest uppercase font-serif text-[#d35400]/70 mb-2">
+            <div className="parchment rounded-3xl overflow-hidden">
+              {/* Fox image header */}
+              <div style={{
+                height: '140px',
+                background: `linear-gradient(rgba(5,4,18,0.4), rgba(5,4,18,0.7)), url('/assets/prince-fox.jpg') center/cover no-repeat`,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                padding: '16px 20px',
+              }}>
+                <p className="text-xs tracking-widest uppercase font-serif text-[#d35400]/80 mb-1">
                   the fox speaks
                 </p>
-                <h2 className="font-handwriting text-ivory text-xl leading-snug">
+                <h2 className="font-handwriting text-ivory text-xl leading-snug text-center">
                   What did you tame this week?
                 </h2>
-                <p className="font-handwriting text-ivory/40 text-sm italic mt-2">
-                  "You become responsible, forever, for what you have tamed."
-                </p>
               </div>
+
+              <div className="p-7 pt-5">
+              <p className="font-handwriting text-ivory/40 text-sm italic text-center mb-5">
+                "You become responsible, forever, for what you have tamed."
+              </p>
 
               {!submitted ? (
                 <>
@@ -123,6 +133,7 @@ export default function WeeklyFox({ isOpen, onClose }: Props) {
                   until next friday
                 </button>
               )}
+              </div>
             </div>
           </motion.div>
         </>

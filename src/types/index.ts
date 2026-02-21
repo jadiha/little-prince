@@ -3,6 +3,7 @@
 export interface Goal {
   id: string
   name: string                  // e.g. "Run every morning"
+  reason?: string               // why it matters to the user
   planetStyle: GoalPlanetStyle  // visual style for the planet
   createdAt: string             // ISO date string
   logs: DayLog[]

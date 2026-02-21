@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { format } from 'date-fns'
+import { useEffect, useState, useCallback } from 'react'
 import { useAppStore } from '@/store/appStore'
 import { usePrince } from '@/hooks/usePrince'
 import { useWeeklyFox } from '@/hooks/useWeeklyFox'
@@ -8,25 +7,38 @@ import DailyCheckIn from './UI/DailyCheckIn'
 import StoryPlanetPanel from './UI/StoryPlanetPanel'
 import WeeklyFox from './UI/WeeklyFox'
 import HUD from './UI/HUD'
-
-const LAST_VISIT_KEY = 'lp-last-visit'
+import ShootingStars from './UI/ShootingStars'
+import ExplorePage from './Explore/ExplorePage'
+import MyGoalsPage from './Goals/MyGoalsPage'
 
 export default function MainUI() {
   const { callPrince } = usePrince()
   const { shouldShowFox } = useWeeklyFox()
   const [foxOpen, setFoxOpen] = useState(false)
+  const [showShooting, setShowShooting] = useState(false)
+  const [shootingDone, setShootingDone] = useState(false)
 
-  // Morning greeting — fires once on first visit of the day
+  const activeView = useAppStore((s) => s.activeView)
+  const recordVisit = useAppStore((s) => s.recordVisit)
+
+  const handleShootingDone = useCallback(() => {
+    setShowShooting(false)
+    setShootingDone(true)
+  }, [])
+
+  // Morning greeting + shooting stars on daily return
   useEffect(() => {
-    const today = format(new Date(), 'yyyy-MM-dd')
-    const lastVisit = localStorage.getItem(LAST_VISIT_KEY)
+    const isReturning = recordVisit()
+    const delay = isReturning ? 600 : 0
 
-    if (lastVisit !== today) {
-      localStorage.setItem(LAST_VISIT_KEY, today)
-      // Small delay so the universe has time to render
-      const id = setTimeout(() => callPrince('morning'), 1800)
-      return () => clearTimeout(id)
+    if (isReturning) {
+      setShowShooting(true)
     }
+
+    // Fire morning greeting after shooting stars (or immediately if first visit today)
+    const greetDelay = isReturning ? 2600 : 1800
+    const id = setTimeout(() => callPrince('morning'), greetDelay + delay)
+    return () => clearTimeout(id)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Friday Fox reflection — delayed so it doesn't clash with morning greeting
@@ -36,7 +48,7 @@ export default function MainUI() {
     return () => clearTimeout(id)
   }, [shouldShowFox])
 
-  // Listen for Little Prince click from the canvas
+  // Listen for Little Prince sprite click
   useEffect(() => {
     const handler = () => callPrince('morning')
     window.addEventListener('prince:clicked', handler)
@@ -45,6 +57,14 @@ export default function MainUI() {
 
   return (
     <>
+      {/* Shooting stars on daily return */}
+      {showShooting && <ShootingStars onDone={handleShootingDone} />}
+
+      {/* Overlay pages */}
+      {activeView === 'explore' && <ExplorePage />}
+      {activeView === 'mygoals' && <MyGoalsPage />}
+
+      {/* Core UI — always visible */}
       <HUD />
       <PrinceMessage />
       <DailyCheckIn />

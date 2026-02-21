@@ -23,8 +23,12 @@ interface AppState {
   weeklyReflections: WeeklyReflection[]
   onboarding: OnboardingState
 
+  // Persisted user data
+  userName: string
+  lastVisitDate: string | null   // 'YYYY-MM-DD' — for shooting stars detection
+
   // UI state (not persisted)
-  activeView: 'universe' | 'goalPlanet' | 'storyPlanet' | 'onboarding'
+  activeView: 'universe' | 'goalPlanet' | 'storyPlanet' | 'onboarding' | 'explore' | 'mygoals'
   selectedGoalId: string | null
   selectedStoryPlanetId: StoryPlanetId | null
   princeMessage: string | null
@@ -36,8 +40,12 @@ interface AppState {
 
 interface AppActions {
   // Goals
-  addGoal: (name: string, planetStyle: GoalPlanetStyle) => Goal
+  addGoal: (name: string, planetStyle: GoalPlanetStyle, reason?: string) => Goal
   updateGoalName: (goalId: string, name: string) => void
+
+  // User
+  setUserName: (name: string) => void
+  recordVisit: () => boolean  // records today's visit, returns true if returning user
 
   // Logging
   logDay: (goalId: string, note?: string) => Star | null  // null if already logged today
@@ -70,6 +78,8 @@ export const useAppStore = create<AppStore>()(
       stars: [],
       weeklyReflections: [],
       onboarding: { completed: false },
+      userName: '',
+      lastVisitDate: null,
 
       activeView: 'onboarding',
       selectedGoalId: null,
@@ -79,16 +89,28 @@ export const useAppStore = create<AppStore>()(
       checkInGoalId: null,
 
       // ── Goal actions ───────────────────────────────────────────────────────
-      addGoal: (name, planetStyle) => {
+      addGoal: (name, planetStyle, reason) => {
         const goal: Goal = {
           id: uuidv4(),
           name,
+          reason,
           planetStyle,
           createdAt: new Date().toISOString(),
           logs: [],
         }
         set((s) => ({ goals: [...s.goals, goal] }))
         return goal
+      },
+
+      // ── User actions ───────────────────────────────────────────────────────
+      setUserName: (name) => set({ userName: name }),
+
+      recordVisit: () => {
+        const today = format(new Date(), 'yyyy-MM-dd')
+        const { lastVisitDate } = get()
+        const isReturning = lastVisitDate !== null && lastVisitDate !== today
+        set({ lastVisitDate: today })
+        return isReturning
       },
 
       updateGoalName: (goalId, name) => {
@@ -181,6 +203,8 @@ export const useAppStore = create<AppStore>()(
         stars: state.stars,
         weeklyReflections: state.weeklyReflections,
         onboarding: state.onboarding,
+        userName: state.userName,
+        lastVisitDate: state.lastVisitDate,
       }),
       // Re-derive activeView from onboarding state on rehydration
       onRehydrateStorage: () => (state) => {

@@ -25,7 +25,8 @@ export default function HUD() {
 
   return (
     <motion.div
-      className="fixed inset-x-0 top-0 z-30 pointer-events-none"
+      className="fixed top-0 right-0 z-30 pointer-events-none"
+      style={{ left: 'var(--sidebar-width, 56px)' }}
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1, duration: 1 }}

@@ -7,12 +7,37 @@ import { getStyleById } from '@/data/goalPlanetStyles'
 // Tracks birth time of each new star for entry animation
 const starBirthTimes = new Map<string, number>()
 
+// Generate a canvas-based 5-pointed star texture
+function createStarTexture(): THREE.Texture {
+  const canvas = document.createElement('canvas')
+  canvas.width = 64
+  canvas.height = 64
+  const ctx = canvas.getContext('2d')!
+  ctx.clearRect(0, 0, 64, 64)
+  ctx.beginPath()
+  for (let i = 0; i < 5; i++) {
+    const outerAngle = (i * 4 * Math.PI) / 5 - Math.PI / 2
+    const innerAngle = outerAngle + (2 * Math.PI) / 10
+    if (i === 0) {
+      ctx.moveTo(32 + 28 * Math.cos(outerAngle), 32 + 28 * Math.sin(outerAngle))
+    } else {
+      ctx.lineTo(32 + 28 * Math.cos(outerAngle), 32 + 28 * Math.sin(outerAngle))
+    }
+    ctx.lineTo(32 + 12 * Math.cos(innerAngle), 32 + 12 * Math.sin(innerAngle))
+  }
+  ctx.closePath()
+  ctx.fillStyle = '#ffffff'
+  ctx.fill()
+  return new THREE.CanvasTexture(canvas)
+}
+
 export default function LoggedStars() {
   const stars = useAppStore((s) => s.stars)
   const goals = useAppStore((s) => s.goals)
   const clockRef = useRef(0)
 
   const meshRef = useRef<THREE.Points>(null)
+  const starTexture = useMemo(() => createStarTexture(), [])
 
   // Map goalId → color from planet style
   const goalColorMap = useMemo(() => {
@@ -39,7 +64,7 @@ export default function LoggedStars() {
       col[i * 3 + 1] = color.g
       col[i * 3 + 2] = color.b
 
-      sz[i] = starBirthTimes.has(star.id) ? 0 : 0.12
+      sz[i] = starBirthTimes.has(star.id) ? 0 : 0.28
     })
 
     return { positions: pos, colors: col, sizes: sz }
@@ -73,11 +98,11 @@ export default function LoggedStars() {
           const eased = t < 0.5
             ? 4 * t * t * t
             : 1 - Math.pow(-2 * t + 2, 3) / 2
-          sizeAttr.setX(i, eased * 0.16)
+          sizeAttr.setX(i, eased * 0.4)
           needsUpdate = true
         } else {
           // Add a gentle twinkle once settled
-          const twinkle = 0.10 + Math.sin(clockRef.current * 1.5 + i * 0.7) * 0.04
+          const twinkle = 0.28 + Math.sin(clockRef.current * 1.5 + i * 0.7) * 0.06
           sizeAttr.setX(i, twinkle)
           needsUpdate = true
         }
@@ -101,7 +126,10 @@ export default function LoggedStars() {
         sizeAttenuation
         transparent
         opacity={0.95}
-        size={0.12}
+        size={0.3}
+        map={starTexture}
+        alphaTest={0.1}
+        depthWrite={false}
       />
     </points>
   )

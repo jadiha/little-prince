@@ -6,7 +6,7 @@ interface Props {
   count?: number
 }
 
-export default function StarParticles({ count = 2000 }: Props) {
+export default function StarParticles({ count = 150 }: Props) {
   const meshRef = useRef<THREE.Points>(null)
 
   const [positions, sizes] = useMemo(() => {
@@ -23,8 +23,8 @@ export default function StarParticles({ count = 2000 }: Props) {
       pos[i * 3 + 1] = r * Math.cos(theta)
       pos[i * 3 + 2] = r * Math.sin(theta) * Math.sin(phi)
 
-      // Vary sizes for depth perception
-      sz[i] = Math.random() * 0.08 + 0.01
+      // Vary sizes for depth perception — kept small and subtle
+      sz[i] = Math.random() * 0.04 + 0.008
     }
 
     return [pos, sz]
@@ -53,8 +53,8 @@ export default function StarParticles({ count = 2000 }: Props) {
         color="#e8d5a3"
         sizeAttenuation
         transparent
-        opacity={0.7}
-        size={0.05}
+        opacity={0.35}
+        size={0.025}
       />
     </points>
   )
