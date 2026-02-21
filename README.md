@@ -28,9 +28,6 @@ The universe is also home to the six planets from the book — The King, The Vai
 # Install dependencies
 npm install --registry https://registry.npmjs.org
 
-# Add your Anthropic API key to .env.local
-# ANTHROPIC_API_KEY=your-key-here
-
 # Start the app
 npm run dev
 ```
@@ -45,7 +42,6 @@ Open `http://localhost:5173`
 - Three.js via @react-three/fiber
 - Framer Motion
 - Zustand
-- Claude API (claude-sonnet-4-6) — for the Little Prince's voice
 
 ---
 
