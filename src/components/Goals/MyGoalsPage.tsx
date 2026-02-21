@@ -1,7 +1,163 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore, selectIsGoalTendedToday, selectDaysSinceTended } from '@/store/appStore'
-import { getStyleById } from '@/data/goalPlanetStyles'
+import { GOAL_PLANET_STYLES, getStyleById } from '@/data/goalPlanetStyles'
 import type { Goal } from '@/types'
+import type { GoalPlanetStyle } from '@/types'
+
+// ─── Add Planet Form ──────────────────────────────────────────────────────────
+
+function AddPlanetForm({
+  onAdd,
+  onClose,
+}: {
+  onAdd: (name: string, style: GoalPlanetStyle, reason: string) => void
+  onClose: () => void
+}) {
+  const [name, setName] = useState('')
+  const [reason, setReason] = useState('')
+  const [selectedStyle, setSelectedStyle] = useState<GoalPlanetStyle>('amber-health')
+
+  const inputStyle = {
+    width: '100%',
+    background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(240,232,210,0.12)',
+    borderRadius: '10px',
+    padding: '10px 14px',
+    color: 'rgba(240,232,210,0.88)',
+    fontSize: '15px',
+    fontFamily: "'Cormorant Garamond', serif",
+    outline: 'none',
+  }
+
+  const labelStyle = {
+    color: 'rgba(240,232,210,0.4)',
+    fontSize: '11px',
+    fontFamily: "'Cormorant Garamond', serif",
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase' as const,
+    marginBottom: '7px',
+    display: 'block',
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: 0.35 }}
+      style={{
+        marginTop: '20px',
+        background: 'rgba(244,208,63,0.04)',
+        border: '1px solid rgba(244,208,63,0.2)',
+        borderRadius: '16px',
+        padding: '24px',
+      }}
+    >
+      <h3 style={{
+        fontFamily: "'Cormorant Garamond', serif",
+        fontSize: '18px',
+        color: 'rgba(244,208,63,0.85)',
+        fontWeight: 400,
+        marginBottom: '20px',
+      }}>
+        A new planet for your sky
+      </h3>
+
+      {/* Goal name */}
+      <div style={{ marginBottom: '16px' }}>
+        <label style={labelStyle}>What will this planet be?</label>
+        <input
+          style={inputStyle}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="e.g. Run every morning"
+          onFocus={(e) => { e.target.style.borderColor = 'rgba(244,208,63,0.4)' }}
+          onBlur={(e) => { e.target.style.borderColor = 'rgba(240,232,210,0.12)' }}
+          autoFocus
+        />
+      </div>
+
+      {/* Reason */}
+      <div style={{ marginBottom: '20px' }}>
+        <label style={labelStyle}>Why does it matter to you? (optional)</label>
+        <input
+          style={inputStyle}
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          placeholder="e.g. I want to feel strong in my body"
+          onFocus={(e) => { e.target.style.borderColor = 'rgba(244,208,63,0.4)' }}
+          onBlur={(e) => { e.target.style.borderColor = 'rgba(240,232,210,0.12)' }}
+        />
+      </div>
+
+      {/* Planet style */}
+      <div style={{ marginBottom: '24px' }}>
+        <label style={labelStyle}>Choose its colour</label>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {GOAL_PLANET_STYLES.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setSelectedStyle(s.id)}
+              title={s.description}
+              style={{
+                padding: '6px 14px',
+                border: `1px solid ${selectedStyle === s.id ? s.color : s.color + '44'}`,
+                borderRadius: '20px',
+                background: selectedStyle === s.id ? `${s.color}20` : 'transparent',
+                color: selectedStyle === s.id ? s.color : `${s.color}88`,
+                fontSize: '12px',
+                fontFamily: "'Cormorant Garamond', serif",
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button
+          onClick={() => { if (name.trim()) onAdd(name.trim(), selectedStyle, reason.trim()) }}
+          disabled={!name.trim()}
+          style={{
+            padding: '10px 24px',
+            background: name.trim() ? 'rgba(244,208,63,0.15)' : 'transparent',
+            border: `1px solid ${name.trim() ? 'rgba(244,208,63,0.5)' : 'rgba(244,208,63,0.15)'}`,
+            borderRadius: '20px',
+            color: name.trim() ? 'rgba(244,208,63,0.9)' : 'rgba(244,208,63,0.3)',
+            fontSize: '14px',
+            fontFamily: "'Cormorant Garamond', serif",
+            cursor: name.trim() ? 'pointer' : 'default',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          Add to my universe
+        </button>
+        <button
+          onClick={onClose}
+          style={{
+            padding: '10px 18px',
+            background: 'transparent',
+            border: '1px solid rgba(240,232,210,0.1)',
+            borderRadius: '20px',
+            color: 'rgba(240,232,210,0.3)',
+            fontSize: '13px',
+            fontFamily: "'Cormorant Garamond', serif",
+            cursor: 'pointer',
+          }}
+        >
+          cancel
+        </button>
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Goal Card ────────────────────────────────────────────────────────────────
 
 function GoalCard({ goal }: { goal: Goal }) {
   const style = getStyleById(goal.planetStyle)
@@ -108,10 +264,20 @@ function GoalCard({ goal }: { goal: Goal }) {
   )
 }
 
+// ─── Main Page ────────────────────────────────────────────────────────────────
+
 export default function MyGoalsPage() {
   const goals = useAppStore((s) => s.goals)
   const userName = useAppStore((s) => s.userName)
-  const setActiveView = useAppStore((s) => s.setActiveView)
+  const addGoal = useAppStore((s) => s.addGoal)
+  const [showForm, setShowForm] = useState(false)
+
+  const handleAdd = (name: string, style: GoalPlanetStyle, reason: string) => {
+    addGoal(name, style, reason || undefined)
+    setShowForm(false)
+  }
+
+  const canAddMore = goals.length < 5
 
   return (
     <motion.div
@@ -129,8 +295,9 @@ export default function MyGoalsPage() {
       <div className="page-sidebar-inset" style={{
         maxWidth: '680px',
         margin: '0 auto',
-        padding: '80px 24px 60px',
+        padding: '80px 24px 80px',
       }}>
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -156,18 +323,43 @@ export default function MyGoalsPage() {
           </p>
         </motion.div>
 
-        {goals.length === 0 ? (
-          <div style={{
-            color: 'rgba(240,232,210,0.3)',
-            fontSize: '15px',
-            fontStyle: 'italic',
-            fontFamily: "'IM Fell English', serif",
-            textAlign: 'center',
-            paddingTop: '40px',
-          }}>
-            No planets yet. Return to your universe to create one.
-          </div>
-        ) : (
+        {/* Empty state */}
+        {goals.length === 0 && !showForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{ textAlign: 'center', paddingTop: '24px' }}
+          >
+            <p style={{
+              color: 'rgba(240,232,210,0.35)',
+              fontSize: '15px',
+              fontStyle: 'italic',
+              fontFamily: "'IM Fell English', serif",
+              marginBottom: '24px',
+              lineHeight: 1.7,
+            }}>
+              Your sky is waiting for its first constellation.
+            </p>
+            <button
+              onClick={() => setShowForm(true)}
+              style={{
+                padding: '10px 28px',
+                background: 'transparent',
+                border: '1px solid rgba(244,208,63,0.3)',
+                borderRadius: '24px',
+                color: 'rgba(244,208,63,0.7)',
+                fontSize: '14px',
+                fontFamily: "'Cormorant Garamond', serif",
+                cursor: 'pointer',
+              }}
+            >
+              + Create your first planet
+            </button>
+          </motion.div>
+        )}
+
+        {/* Goals list */}
+        {goals.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {goals.map((goal, i) => (
               <motion.div
@@ -182,14 +374,15 @@ export default function MyGoalsPage() {
           </div>
         )}
 
-        {goals.length > 0 && goals.length < 5 && (
+        {/* Add planet button — only when not showing form and under limit */}
+        {canAddMore && !showForm && goals.length > 0 && (
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            onClick={() => setActiveView('universe')}
+            onClick={() => setShowForm(true)}
             style={{
-              marginTop: '24px',
+              marginTop: '20px',
               padding: '10px 24px',
               background: 'transparent',
               border: '1px solid rgba(244,208,63,0.25)',
@@ -204,6 +397,16 @@ export default function MyGoalsPage() {
             + Add a planet
           </motion.button>
         )}
+
+        {/* Inline add form */}
+        <AnimatePresence>
+          {showForm && (
+            <AddPlanetForm
+              onAdd={handleAdd}
+              onClose={() => setShowForm(false)}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   )

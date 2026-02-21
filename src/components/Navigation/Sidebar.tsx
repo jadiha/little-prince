@@ -99,7 +99,7 @@ export default function Sidebar() {
       >
         {NAV_ITEMS.map((item) => {
           const isActive = activeView === item.id ||
-            (item.id === 'universe' && (activeView === 'goalPlanet' || activeView === 'storyPlanet'))
+            (item.id === 'universe' && (activeView === 'goalPlanet' || activeView === 'storyPlanet' || activeView === 'roseView'))
           return (
             <button
               key={item.id}

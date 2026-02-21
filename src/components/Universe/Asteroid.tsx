@@ -7,6 +7,8 @@ import { useAppStore, selectRoseState } from '@/store/appStore'
 export default function Asteroid() {
   const meshRef = useRef<THREE.Mesh>(null)
   const roseState = useAppStore(selectRoseState)
+  const activeView = useAppStore((s) => s.activeView)
+  const setActiveView = useAppStore((s) => s.setActiveView)
 
   // Slow self-rotation for the asteroid
   useFrame((_, delta) => {
@@ -16,8 +18,16 @@ export default function Asteroid() {
     }
   })
 
+  const handleRoseClick = () => {
+    if (activeView === 'universe') setActiveView('roseView')
+  }
+
   return (
-    <group>
+    <group
+      onClick={handleRoseClick}
+      onPointerOver={() => { if (activeView === 'universe') document.body.style.cursor = 'pointer' }}
+      onPointerOut={() => { document.body.style.cursor = 'default' }}
+    >
       {/* The asteroid itself */}
       <mesh ref={meshRef} castShadow receiveShadow>
         <dodecahedronGeometry args={[1.0, 1]} />

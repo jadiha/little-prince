@@ -8,6 +8,7 @@ import StoryPlanetPanel from './UI/StoryPlanetPanel'
 import WeeklyFox from './UI/WeeklyFox'
 import HUD from './UI/HUD'
 import ShootingStars from './UI/ShootingStars'
+import RosePanel from './UI/RosePanel'
 import ExplorePage from './Explore/ExplorePage'
 import MyGoalsPage from './Goals/MyGoalsPage'
 
@@ -63,6 +64,9 @@ export default function MainUI() {
       {/* Overlay pages */}
       {activeView === 'explore' && <ExplorePage />}
       {activeView === 'mygoals' && <MyGoalsPage />}
+
+      {/* Rose health panel — visible when zoomed into the rose */}
+      <RosePanel />
 
       {/* Core UI — always visible */}
       <HUD />

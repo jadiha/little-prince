@@ -40,6 +40,10 @@ export default function SceneController() {
         _targetPos.copy(planetPos).addScaledVector(dir, 3.5)
         _targetLook.copy(planetPos)
       }
+    } else if (activeView === 'roseView') {
+      // Zoom into the rose sitting on top of the asteroid
+      _targetPos.set(0, 2.2, 3.0)
+      _targetLook.set(-0.25, 1.1, 0.1)
     }
 
     camera.position.lerp(_targetPos, speed)

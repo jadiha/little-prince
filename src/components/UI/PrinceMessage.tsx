@@ -37,8 +37,13 @@ export default function PrinceMessage() {
   const princeMessage = useAppStore((s) => s.princeMessage)
   const isPrinceTyping = useAppStore((s) => s.isPrinceTyping)
   const setPrinceMessage = useAppStore((s) => s.setPrinceMessage)
+  const activeView = useAppStore((s) => s.activeView)
 
-  const isVisible = isPrinceTyping || !!princeMessage
+  // Don't overlay prince message on full-screen pages
+  const isVisible = (isPrinceTyping || !!princeMessage) &&
+    activeView !== 'explore' &&
+    activeView !== 'mygoals' &&
+    activeView !== 'roseView'
 
   // Auto-dismiss after 14s
   useEffect(() => {

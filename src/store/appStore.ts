@@ -28,7 +28,7 @@ interface AppState {
   lastVisitDate: string | null   // 'YYYY-MM-DD' — for shooting stars detection
 
   // UI state (not persisted)
-  activeView: 'universe' | 'goalPlanet' | 'storyPlanet' | 'onboarding' | 'explore' | 'mygoals'
+  activeView: 'universe' | 'goalPlanet' | 'storyPlanet' | 'onboarding' | 'explore' | 'mygoals' | 'roseView'
   selectedGoalId: string | null
   selectedStoryPlanetId: StoryPlanetId | null
   princeMessage: string | null

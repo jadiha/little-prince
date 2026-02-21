@@ -8,6 +8,7 @@ import LoggedStars from './LoggedStars'
 import Asteroid from './Asteroid'
 import GoalPlanet from './GoalPlanet'
 import DistantUniversePlanets from './DistantUniversePlanets'
+import StarBirthTrails from './StarBirthTrails'
 import { useAppStore } from '@/store/appStore'
 
 export default function UniverseCanvas() {
@@ -62,6 +63,9 @@ export default function UniverseCanvas() {
 
       {/* Distant universe — the 6 planets the Little Prince visited, far away */}
       <DistantUniversePlanets />
+
+      {/* 3D shooting star trail when a new habit is logged */}
+      <StarBirthTrails />
 
       {/* Post-processing */}
       <EffectComposer>
