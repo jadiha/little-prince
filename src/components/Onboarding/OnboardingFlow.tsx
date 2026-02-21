@@ -30,6 +30,7 @@ export default function OnboardingFlow() {
   const setUserName = useAppStore((s) => s.setUserName)
   const addGoalToStore = useAppStore((s) => s.addGoal)
   const completeOnboarding = useAppStore((s) => s.completeOnboarding)
+  const recordVisit = useAppStore((s) => s.recordVisit)
 
   const handleNameContinue = () => {
     const trimmed = nameInput.trim()
@@ -50,6 +51,7 @@ export default function OnboardingFlow() {
     for (const g of valid) {
       addGoalToStore(g.name.trim(), g.style, g.reason.trim() || undefined)
     }
+    recordVisit()
     completeOnboarding()
   }
 
