@@ -166,7 +166,8 @@ function GoalCard({ goal }: { goal: Goal }) {
   const openCheckIn = useAppStore((s) => s.openCheckIn)
   const stars = useAppStore((s) => s.stars.filter((star) => star.goalId === goal.id))
 
-  const lastLog = goal.logs.length > 0 ? goal.logs[goal.logs.length - 1] : null
+  const logs = goal.logs ?? []
+  const lastLog = logs.length > 0 ? logs[logs.length - 1] : null
 
   return (
     <motion.div
@@ -280,16 +281,13 @@ export default function MyGoalsPage() {
   const canAddMore = goals.length < 5
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
       style={{
         position: 'fixed',
         inset: 0,
         overflowY: 'auto',
         background: 'linear-gradient(160deg, #080612 0%, #0d0a1f 60%, #080612 100%)',
-        zIndex: 35,
+        zIndex: 50,
       }}
     >
       <div className="page-sidebar-inset" style={{
@@ -408,6 +406,6 @@ export default function MyGoalsPage() {
           )}
         </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   )
 }

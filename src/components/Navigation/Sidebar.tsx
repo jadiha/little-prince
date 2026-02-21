@@ -90,7 +90,7 @@ export default function Sidebar() {
           background: 'rgba(8,6,18,0.85)',
           borderRight: '1px solid rgba(244,208,63,0.12)',
           backdropFilter: 'blur(12px)',
-          zIndex: 40,
+          zIndex: 60,
           display: 'flex',
           flexDirection: 'column',
           paddingTop: '70px',
