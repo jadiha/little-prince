@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg-v" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#12151e"/>
+      <stop offset="100%" stop-color="#06051f"/>
+    </radialGradient>
+    <radialGradient id="spot-v" cx="50%" cy="45%" r="42%">
+      <stop offset="0%" stop-color="#c0c8d0" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#c0c8d0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#bg-v)"/>
+  <!-- Spotlight halo (desire for admiration) -->
+  <circle cx="100" cy="100" r="72" fill="url(#spot-v)"/>
+  <circle cx="100" cy="100" r="72" fill="none" stroke="#c0c8d0" stroke-width="0.5" opacity="0.2"/>
+  <!-- Planet surface -->
+  <ellipse cx="100" cy="160" rx="50" ry="13" fill="#1a1e28" opacity="0.9"/>
+  <!-- Body -->
+  <path d="M80 125 Q100 118 120 125 L117 157 Q100 162 83 157 Z" fill="#2a3040" opacity="0.85"/>
+  <!-- Head -->
+  <ellipse cx="100" cy="110" rx="11" ry="13" fill="#f4d090" opacity="0.8"/>
+  <!-- Top hat brim -->
+  <ellipse cx="100" cy="95" rx="18" ry="5" fill="#c0c8d0" opacity="0.9"/>
+  <!-- Top hat body -->
+  <rect x="86" y="70" width="28" height="26" rx="2" fill="#c0c8d0" opacity="0.9"/>
+  <!-- Hat band -->
+  <rect x="86" y="90" width="28" height="4" fill="#8090a0" opacity="0.8"/>
+  <!-- Small mirror / admiring gesture -->
+  <ellipse cx="130" cy="118" rx="9" ry="11" fill="none" stroke="#c0c8d0" stroke-width="1.5" opacity="0.6"/>
+  <ellipse cx="130" cy="118" rx="7" ry="9" fill="#c0c8d0" opacity="0.08"/>
+  <line x1="130" y1="129" x2="130" y2="137" stroke="#c0c8d0" stroke-width="1.5" opacity="0.5"/>
+  <!-- Stars (more, for the vanity) -->
+  <circle cx="38" cy="32" r="2" fill="#fff" opacity="0.6"/>
+  <circle cx="162" cy="25" r="2" fill="#c0c8d0" opacity="0.7"/>
+  <circle cx="170" cy="80" r="1.5" fill="#fff" opacity="0.4"/>
+  <circle cx="30" cy="110" r="1" fill="#c0c8d0" opacity="0.5"/>
+  <circle cx="168" cy="145" r="1.5" fill="#fff" opacity="0.3"/>
+  <circle cx="45" cy="160" r="1" fill="#c0c8d0" opacity="0.4"/>
+</svg>

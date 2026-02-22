@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg-d" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#110d04"/>
+      <stop offset="100%" stop-color="#06051f"/>
+    </radialGradient>
+    <radialGradient id="glow-d" cx="50%" cy="60%" r="40%">
+      <stop offset="0%" stop-color="#7d6608" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#7d6608" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#bg-d)"/>
+  <circle cx="100" cy="110" r="60" fill="url(#glow-d)"/>
+  <!-- Planet surface -->
+  <ellipse cx="100" cy="162" rx="48" ry="12" fill="#2a1f04" opacity="0.85"/>
+  <!-- Hunched figure (body) -->
+  <path d="M78 130 Q90 120 110 122 L114 158 Q100 163 86 158 Z" fill="#3d2e06" opacity="0.9"/>
+  <!-- Head, drooping forward -->
+  <ellipse cx="93" cy="118" rx="11" ry="12" fill="#f4d090" opacity="0.75"/>
+  <!-- Bottle in hand -->
+  <!-- Bottle body -->
+  <path d="M116 120 Q124 120 125 128 L124 150 Q122 154 118 154 L115 154 Q111 154 109 150 L108 128 Q109 120 116 120 Z" fill="#7d6608" opacity="0.85"/>
+  <!-- Bottle neck -->
+  <rect x="113" y="110" width="6" height="12" rx="2" fill="#7d6608" opacity="0.8"/>
+  <!-- Bottle highlight -->
+  <path d="M111 130 Q112 125 113 130" stroke="#f4d03f" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <!-- Small stars (fewer, lonelier) -->
+  <circle cx="40" cy="45" r="1.5" fill="#f4d03f" opacity="0.4"/>
+  <circle cx="160" cy="38" r="1" fill="#fff" opacity="0.3"/>
+  <circle cx="168" cy="100" r="1.5" fill="#f4d03f" opacity="0.3"/>
+  <circle cx="35" cy="155" r="1" fill="#fff" opacity="0.25"/>
+</svg>

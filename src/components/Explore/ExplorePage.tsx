@@ -181,10 +181,21 @@ function PlanetOverview({
   )
 }
 
-// ─── Character illustration with image or styled fallback ─────────────────────
+// ─── Character illustration — SVG portrait or jpg if provided ─────────────────
 function CharacterIllustration({ planet }: { planet: Planet }) {
   const [imgLoaded, setImgLoaded] = useState(false)
-  const [imgError, setImgError] = useState(false)
+  // Try .svg first (our illustrated portraits)
+  const [src, setSrc] = useState(`/assets/characters/${planet.id}.svg`)
+  const [failed, setFailed] = useState(false)
+
+  const handleError = () => {
+    if (src.endsWith('.svg')) {
+      // Try .jpg (user-provided photo)
+      setSrc(`/assets/characters/${planet.id}.jpg`)
+    } else {
+      setFailed(true)
+    }
+  }
 
   return (
     <motion.div
@@ -193,25 +204,25 @@ function CharacterIllustration({ planet }: { planet: Planet }) {
       transition={{ duration: 0.55, delay: 0.05 }}
       style={{ marginBottom: '32px', display: 'flex', justifyContent: 'center' }}
     >
-      {!imgError ? (
+      {!failed ? (
         <img
-          src={`/assets/characters/${planet.id}.jpg`}
+          src={src}
           alt={planet.characterName}
           onLoad={() => setImgLoaded(true)}
-          onError={() => setImgError(true)}
+          onError={handleError}
           style={{
-            maxHeight: '180px',
-            maxWidth: '100%',
+            width: '160px',
+            height: '160px',
             objectFit: 'contain',
-            mixBlendMode: 'multiply',
-            filter: 'sepia(0.25) saturate(1.3)',
+            borderRadius: '50%',
             opacity: imgLoaded ? 1 : 0,
-            transition: 'opacity 0.4s ease',
-            borderRadius: '8px',
+            transition: 'opacity 0.5s ease',
+            boxShadow: `0 0 40px ${planet.color}33, 0 0 80px ${planet.color}11`,
+            border: `1px solid ${planet.color}22`,
           }}
         />
       ) : (
-        /* Styled illustrated placeholder when no image file exists */
+        /* Fallback circle if all image loading fails */
         <div style={{
           width: '140px',
           height: '140px',

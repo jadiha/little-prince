@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg-k" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#1a0830"/>
+      <stop offset="100%" stop-color="#06051f"/>
+    </radialGradient>
+    <radialGradient id="glow-k" cx="50%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#6a2a8a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#4a235a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#bg-k)"/>
+  <circle cx="100" cy="115" r="65" fill="url(#glow-k)"/>
+  <!-- Planet surface -->
+  <ellipse cx="100" cy="158" rx="52" ry="14" fill="#3d1a55" opacity="0.8"/>
+  <!-- Robe / body -->
+  <path d="M78 118 Q100 112 122 118 L118 155 Q100 160 82 155 Z" fill="#5c2070" opacity="0.9"/>
+  <!-- Ermine trim -->
+  <path d="M78 118 Q100 112 122 118 L120 124 Q100 120 80 124 Z" fill="#f0e8d0" opacity="0.7"/>
+  <!-- Head -->
+  <ellipse cx="100" cy="104" rx="11" ry="13" fill="#f4d090" opacity="0.85"/>
+  <!-- Crown -->
+  <path d="M84 98 L87 82 L95 92 L100 76 L105 92 L113 82 L116 98 Z" fill="#f4d03f" opacity="0.95"/>
+  <!-- Crown jewels -->
+  <circle cx="100" cy="82" r="3" fill="#e74c3c" opacity="0.9"/>
+  <circle cx="89" cy="87" r="2" fill="#e74c3c" opacity="0.7"/>
+  <circle cx="111" cy="87" r="2" fill="#e74c3c" opacity="0.7"/>
+  <!-- Scepter -->
+  <line x1="125" y1="115" x2="135" y2="145" stroke="#f4d03f" stroke-width="2" opacity="0.7"/>
+  <circle cx="125" cy="113" r="5" fill="#f4d03f" opacity="0.8"/>
+  <!-- Stars -->
+  <circle cx="35" cy="35" r="2" fill="#f4d03f" opacity="0.7"/>
+  <circle cx="165" cy="28" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="172" cy="75" r="1" fill="#f4d03f" opacity="0.6"/>
+  <circle cx="28" cy="120" r="1.5" fill="#fff" opacity="0.4"/>
+  <circle cx="155" cy="155" r="1" fill="#f4d03f" opacity="0.5"/>
+  <circle cx="50" cy="165" r="1.5" fill="#fff" opacity="0.3"/>
+</svg>

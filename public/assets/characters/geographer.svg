@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg-g" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#040d18"/>
+      <stop offset="100%" stop-color="#06051f"/>
+    </radialGradient>
+    <radialGradient id="glow-g" cx="50%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#7fb3d3" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#7fb3d3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#bg-g)"/>
+  <circle cx="100" cy="110" r="60" fill="url(#glow-g)"/>
+  <!-- Planet surface -->
+  <ellipse cx="100" cy="162" rx="50" ry="13" fill="#081520" opacity="0.9"/>
+  <!-- Large open book (the centrepiece) -->
+  <!-- Left page -->
+  <path d="M52 115 Q52 100 64 98 L98 96 L98 148 Q80 147 64 150 Q52 148 52 138 Z" fill="#eae4d4" opacity="0.88"/>
+  <!-- Right page -->
+  <path d="M102 96 L136 98 Q148 100 148 115 L148 138 Q148 148 136 150 Q120 147 102 148 Z" fill="#ddd6c4" opacity="0.85"/>
+  <!-- Book spine -->
+  <path d="M98 96 L102 96 L102 148 L98 148 Z" fill="#7fb3d3" opacity="0.7"/>
+  <!-- Left page mountain lines (map) -->
+  <path d="M62 120 L72 110 L80 118 L90 108 L96 115" stroke="#7fb3d3" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M60 130 Q78 126 96 132" stroke="#7fb3d3" stroke-width="0.8" fill="none" opacity="0.35"/>
+  <path d="M60 138 Q78 134 96 140" stroke="#7fb3d3" stroke-width="0.8" fill="none" opacity="0.25"/>
+  <!-- Right page text lines -->
+  <line x1="106" y1="108" x2="144" y2="108" stroke="#888" stroke-width="0.8" opacity="0.3"/>
+  <line x1="106" y1="116" x2="144" y2="116" stroke="#888" stroke-width="0.8" opacity="0.3"/>
+  <line x1="106" y1="124" x2="140" y2="124" stroke="#888" stroke-width="0.8" opacity="0.25"/>
+  <line x1="106" y1="132" x2="144" y2="132" stroke="#888" stroke-width="0.8" opacity="0.2"/>
+  <line x1="106" y1="140" x2="136" y2="140" stroke="#888" stroke-width="0.8" opacity="0.2"/>
+  <!-- Body (bending over book) -->
+  <path d="M75 98 Q95 90 115 95 L114 112 Q95 116 76 112 Z" fill="#1a3a55" opacity="0.85"/>
+  <!-- Head -->
+  <ellipse cx="96" cy="89" rx="11" ry="12" fill="#f4d090" opacity="0.8"/>
+  <!-- Quill pen in hand -->
+  <path d="M115 100 Q125 88 130 80" stroke="#e8d5a0" stroke-width="1.5" fill="none" opacity="0.7" stroke-linecap="round"/>
+  <path d="M130 80 Q134 74 128 76" stroke="#e8d5a0" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Stars (knowledge in the sky, but he won't go see them) -->
+  <circle cx="35" cy="38" r="2" fill="#7fb3d3" opacity="0.7"/>
+  <circle cx="58" cy="25" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="162" cy="28" r="2" fill="#7fb3d3" opacity="0.6"/>
+  <circle cx="172" cy="68" r="1.5" fill="#fff" opacity="0.4"/>
+  <circle cx="168" cy="100" r="1" fill="#7fb3d3" opacity="0.5"/>
+  <circle cx="30" cy="125" r="1.5" fill="#fff" opacity="0.3"/>
+</svg>
