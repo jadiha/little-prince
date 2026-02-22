@@ -286,7 +286,7 @@ export default function MyGoalsPage() {
         position: 'fixed',
         inset: 0,
         overflowY: 'auto',
-        background: 'linear-gradient(160deg, #080612 0%, #0d0a1f 60%, #080612 100%)',
+        background: 'linear-gradient(160deg, #0c0820 0%, #130a30 45%, #0a0620 100%)',
         zIndex: 50,
       }}
     >

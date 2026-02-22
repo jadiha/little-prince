@@ -9,6 +9,7 @@ import Asteroid from './Asteroid'
 import GoalPlanet from './GoalPlanet'
 import DistantUniversePlanets from './DistantUniversePlanets'
 import StarBirthTrails from './StarBirthTrails'
+import OrbitalRings from './OrbitalRings'
 import { useAppStore } from '@/store/appStore'
 
 export default function UniverseCanvas() {
@@ -21,8 +22,9 @@ export default function UniverseCanvas() {
       gl={{
         antialias: true,
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 0.9,
+        toneMappingExposure: 1.1,
       }}
+      onCreated={(state) => state.gl.setClearColor(new THREE.Color('#07051a'))}
       shadows
       dpr={[1, 2]}
     >
@@ -34,22 +36,26 @@ export default function UniverseCanvas() {
       <SceneController />
 
       {/* Lighting */}
-      <ambientLight color="#1a1a4e" intensity={0.3} />
+      <ambientLight color="#3d1f7a" intensity={0.7} />
       <directionalLight
         position={[5, 8, 5]}
-        color="#fff5e0"
-        intensity={1.2}
+        color="#e8d5ff"
+        intensity={2.0}
         castShadow
       />
+      <pointLight position={[-8, 6, -4]} color="#6633cc" intensity={0.8} distance={40} />
 
-      {/* Background stars (static) */}
-      <StarParticles count={150} />
+      {/* Background stars */}
+      <StarParticles count={800} />
 
       {/* User's earned stars */}
       <LoggedStars />
 
       {/* B-612 Asteroid with the one rose */}
       <Asteroid />
+
+      {/* Orbital path rings */}
+      <OrbitalRings />
 
       {/* Goal planets — inner ring */}
       {goals.map((goal, i) => (
@@ -70,11 +76,11 @@ export default function UniverseCanvas() {
       {/* Post-processing */}
       <EffectComposer>
         <Bloom
-          luminanceThreshold={0.6}
-          luminanceSmoothing={0.4}
-          intensity={0.5}
+          luminanceThreshold={0.25}
+          luminanceSmoothing={0.2}
+          intensity={2.2}
         />
-        <Vignette eskil={false} offset={0.3} darkness={0.7} />
+        <Vignette eskil={false} offset={0.25} darkness={0.6} />
       </EffectComposer>
     </Canvas>
   )

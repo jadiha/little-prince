@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'space-dark': '#0a0a1a',
+        'space-dark': '#07051a',
         'star-gold': '#f4d03f',
         ivory: '#faf7f0',
         'rose-red': '#c0392b',

@@ -32,7 +32,7 @@ export default function GoalPlanet({ goal, goalIndex, totalGoals }: Props) {
 
   // Orbit parameters — inner ring
   const orbitRadius = 3.5 + goalIndex * 2.0
-  const orbitSpeed = 0.006 - goalIndex * 0.0005
+  const orbitSpeed = 0.011 - goalIndex * 0.0008
   const orbitPhase = (goalIndex / Math.max(totalGoals, 1)) * Math.PI * 2
   const inclination = goalIndex * 0.08
 
@@ -68,10 +68,22 @@ export default function GoalPlanet({ goal, goalIndex, totalGoals }: Props) {
     }, 900)
   }
 
-  const planetRadius = 0.45
+  const planetRadius = 0.55
 
   return (
     <group ref={groupRef}>
+      {/* Atmospheric glow — outer haze */}
+      <mesh scale={hovered || isSelected ? 1.35 : 1.25}>
+        <sphereGeometry args={[planetRadius, 16, 12]} />
+        <meshBasicMaterial
+          color={style.color}
+          transparent
+          opacity={hovered || isSelected ? 0.12 : 0.07}
+          side={THREE.BackSide}
+          depthWrite={false}
+        />
+      </mesh>
+
       {/* Planet sphere */}
       <mesh
         ref={meshRef}
@@ -85,31 +97,31 @@ export default function GoalPlanet({ goal, goalIndex, totalGoals }: Props) {
           setHovered(false)
           document.body.style.cursor = 'default'
         }}
-        scale={hovered || isSelected ? 1.1 : 1}
+        scale={hovered || isSelected ? 1.15 : 1}
       >
         <sphereGeometry args={[planetRadius, 28, 20]} />
         <meshToonMaterial
           color={planetColor}
           emissive={emissiveColor}
-          emissiveIntensity={isSelected ? 0.6 : 0.2}
+          emissiveIntensity={isSelected ? 1.6 : hovered ? 1.0 : 0.6}
         />
       </mesh>
 
       {/* Pulse ring — only shown when not tended today */}
       {!isTendedToday && (
         <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[planetRadius + 0.05, planetRadius + 0.2, 32]} />
+          <ringGeometry args={[planetRadius + 0.06, planetRadius + 0.25, 32]} />
           <meshBasicMaterial
             color={style.ringColor ?? style.color}
             transparent
-            opacity={0.3}
+            opacity={0.35}
             side={THREE.DoubleSide}
           />
         </mesh>
       )}
 
-      {/* Planet's own warm point light */}
-      <pointLight color={style.color} intensity={0.4} distance={3} />
+      {/* Planet's own glow light */}
+      <pointLight color={style.color} intensity={hovered ? 2.5 : 1.4} distance={6} decay={2} />
     </group>
   )
 }

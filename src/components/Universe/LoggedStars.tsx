@@ -64,7 +64,7 @@ export default function LoggedStars() {
       col[i * 3 + 1] = color.g
       col[i * 3 + 2] = color.b
 
-      sz[i] = starBirthTimes.has(star.id) ? 0 : 0.28
+      sz[i] = starBirthTimes.has(star.id) ? 0 : 0.42
     })
 
     return { positions: pos, colors: col, sizes: sz }
@@ -98,11 +98,11 @@ export default function LoggedStars() {
           const eased = t < 0.5
             ? 4 * t * t * t
             : 1 - Math.pow(-2 * t + 2, 3) / 2
-          sizeAttr.setX(i, eased * 0.4)
+          sizeAttr.setX(i, eased * 0.55)
           needsUpdate = true
         } else {
           // Add a gentle twinkle once settled
-          const twinkle = 0.28 + Math.sin(clockRef.current * 1.5 + i * 0.7) * 0.06
+          const twinkle = 0.42 + Math.sin(clockRef.current * 1.8 + i * 0.9) * 0.14
           sizeAttr.setX(i, twinkle)
           needsUpdate = true
         }
@@ -126,7 +126,7 @@ export default function LoggedStars() {
         sizeAttenuation
         transparent
         opacity={0.95}
-        size={0.3}
+        size={0.48}
         map={starTexture}
         alphaTest={0.1}
         depthWrite={false}

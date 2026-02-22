@@ -414,7 +414,7 @@ export default function ExplorePage() {
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'radial-gradient(ellipse at 65% 40%, #0f0825 0%, #07030f 55%, #030108 100%)',
+        background: 'radial-gradient(ellipse at 65% 40%, #1a0a38 0%, #0d0525 50%, #070315 100%)',
         zIndex: 35,
         overflow: 'hidden',
       }}

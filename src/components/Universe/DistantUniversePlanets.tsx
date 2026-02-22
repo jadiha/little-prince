@@ -29,54 +29,51 @@ function DistantPlanet({ planet }: { planet: typeof STORY_PLANETS[0] }) {
   })
 
   const base = new THREE.Color(planet.color)
-  // Dark body, strong emissive — so it glows like a distant star rather than
-  // looking like a chunk of rock nearby
-  const bodyColor = base.clone().multiplyScalar(0.25)
+  const bodyColor = base.clone().multiplyScalar(0.3)
 
   return (
     <group ref={groupRef}>
       {/* Planet body */}
       <mesh ref={meshRef}>
-        <sphereGeometry args={[0.65, 24, 16]} />
+        <sphereGeometry args={[0.85, 24, 16]} />
         <meshStandardMaterial
           color={bodyColor}
-          roughness={0.88}
+          roughness={0.8}
           metalness={0.05}
           emissive={base}
-          emissiveIntensity={0.55}
+          emissiveIntensity={1.2}
         />
       </mesh>
 
-      {/* Atmospheric haze — slightly larger, transparent, backside */}
+      {/* Inner atmospheric haze */}
       <mesh>
-        <sphereGeometry args={[0.9, 16, 12]} />
+        <sphereGeometry args={[1.1, 16, 12]} />
         <meshStandardMaterial
           color={planet.color}
           transparent
-          opacity={0.055}
+          opacity={0.14}
           side={THREE.BackSide}
           emissive={planet.color}
-          emissiveIntensity={0.35}
+          emissiveIntensity={0.6}
           depthWrite={false}
         />
       </mesh>
 
-      {/* Outer atmospheric glow ring — very faint */}
+      {/* Outer glow */}
       <mesh>
-        <sphereGeometry args={[1.15, 12, 8]} />
+        <sphereGeometry args={[1.5, 12, 8]} />
         <meshStandardMaterial
           color={planet.color}
           transparent
-          opacity={0.018}
+          opacity={0.06}
           side={THREE.BackSide}
           emissive={planet.color}
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.4}
           depthWrite={false}
         />
       </mesh>
 
-      {/* Subtle local light so the atmosphere catches a faint glow */}
-      <pointLight color={planet.color} intensity={0.22} distance={5} decay={2} />
+      <pointLight color={planet.color} intensity={0.9} distance={8} decay={2} />
     </group>
   )
 }

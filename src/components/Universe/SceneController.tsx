@@ -20,7 +20,7 @@ export default function SceneController() {
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0))
 
   useFrame((_, delta) => {
-    const speed = delta * 1.8
+    const speed = delta * 0.9
 
     if (activeView === 'universe') {
       _targetPos.copy(UNIVERSE_POSITION)

@@ -83,7 +83,7 @@ export default function RosePanel() {
           }}
         >
           <div style={{
-            background: 'rgba(6,3,14,0.92)',
+            background: 'rgba(14,6,32,0.95)',
             backdropFilter: 'blur(24px)',
             border: `1px solid ${info.color}44`,
             borderRadius: '22px',

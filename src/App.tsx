@@ -4,6 +4,7 @@ import OnboardingFlow from '@/components/Onboarding/OnboardingFlow'
 import MainUI from '@/components/MainUI'
 import Sidebar from '@/components/Navigation/Sidebar'
 import LittlePrinceSprite from '@/components/UI/LittlePrinceSprite'
+import CursorTrail from '@/components/UI/CursorTrail'
 
 // Lazy-load the heavy Three.js canvas so the onboarding screen
 // can render immediately while Three.js initialises in the background
@@ -25,6 +26,7 @@ export default function App() {
 
   return (
     <div className="w-screen h-screen bg-space-dark overflow-hidden relative">
+      <CursorTrail />
       {/* 3D Universe — always rendered in background (except during onboarding) */}
       {!isOnboarding && (
         <Suspense fallback={<StarsFallback />}>
