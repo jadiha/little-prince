@@ -34,6 +34,7 @@ function createStarTexture(): THREE.Texture {
 export default function LoggedStars() {
   const stars = useAppStore((s) => s.stars)
   const goals = useAppStore((s) => s.goals)
+  const setHoveredStar = useAppStore((s) => s.setHoveredStar)
   const clockRef = useRef(0)
 
   const meshRef = useRef<THREE.Points>(null)
@@ -115,7 +116,15 @@ export default function LoggedStars() {
   if (stars.length === 0) return null
 
   return (
-    <points ref={meshRef}>
+    <points
+      ref={meshRef}
+      onPointerMove={(e) => {
+        e.stopPropagation()
+        const star = stars[e.index]
+        if (star) setHoveredStar({ goalId: star.goalId, date: star.date })
+      }}
+      onPointerOut={() => setHoveredStar(null)}
+    >
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />

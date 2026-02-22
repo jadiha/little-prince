@@ -23,9 +23,7 @@ const STYLES_ORDER: GoalPlanetStyle[] = [
 export default function OnboardingFlow() {
   const [step, setStep] = useState<Step>('name')
   const [nameInput, setNameInput] = useState('')
-  const [goals, setGoals] = useState<GoalEntry[]>([
-    { name: '', reason: '', style: 'amber-health' },
-  ])
+  const [goalEntry, setGoalEntry] = useState<GoalEntry>({ name: '', reason: '', style: 'amber-health' })
 
   const setUserName = useAppStore((s) => s.setUserName)
   const addGoalToStore = useAppStore((s) => s.addGoal)
@@ -39,18 +37,9 @@ export default function OnboardingFlow() {
     setStep('rose')
   }
 
-  const handleAddGoal = () => {
-    if (goals.length >= 5) return
-    const nextStyle = STYLES_ORDER[goals.length % STYLES_ORDER.length]
-    setGoals([...goals, { name: '', reason: '', style: nextStyle }])
-  }
-
   const handleBegin = () => {
-    const valid = goals.filter((g) => g.name.trim().length > 0)
-    if (valid.length === 0) return
-    for (const g of valid) {
-      addGoalToStore(g.name.trim(), g.style, g.reason.trim() || undefined)
-    }
+    if (!goalEntry.name.trim()) return
+    addGoalToStore(goalEntry.name.trim(), goalEntry.style, goalEntry.reason.trim() || undefined)
     recordVisit()
     completeOnboarding()
   }
@@ -290,7 +279,7 @@ export default function OnboardingFlow() {
                     lineHeight: 1.85,
                     fontFamily: "'Cormorant Garamond', serif",
                   }}>
-                    Each goal you set becomes a planet orbiting your asteroid. Every day you show up for that goal, a star is released into your sky. Your sky is empty today. In a year, it could be full.
+                    Begin with one planet — the goal that matters most to you right now. Every day you show up, a star is released into your sky. Your sky is empty today. In a year, it could be full. You can add more planets any time from Your Goals.
                   </p>
                 </div>
 
@@ -367,7 +356,7 @@ export default function OnboardingFlow() {
                 fontWeight: 400,
                 marginBottom: '6px',
               }}>
-                What will your planets be this year{nameInput.trim() ? `, ${nameInput.trim()}` : ''}?
+                Your first planet{nameInput.trim() ? `, ${nameInput.trim()}` : ''}
               </h2>
               <p style={{
                 color: 'rgba(240,232,210,0.4)',
@@ -376,139 +365,116 @@ export default function OnboardingFlow() {
                 fontFamily: "'IM Fell English', serif",
                 marginBottom: '32px',
               }}>
-                Each goal becomes a planet. Give it a name. Give it a reason.
+                The one thing you want to show up for, this year.
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {goals.map((goal, i) => {
-                  const styleData = getStyleById(goal.style)
-                  return (
-                    <div
-                      key={i}
+              {/* Single goal entry */}
+              {(() => {
+                const styleData = getStyleById(goalEntry.style)
+                return (
+                  <div style={{
+                    padding: '20px',
+                    background: 'rgba(255,255,255,0.025)',
+                    border: `1px solid ${styleData.color}33`,
+                    borderRadius: '10px',
+                    marginBottom: '24px',
+                  }}>
+                    <input
+                      type="text"
+                      placeholder="e.g. Run every morning"
+                      value={goalEntry.name}
+                      onChange={(e) => setGoalEntry({ ...goalEntry, name: e.target.value })}
+                      onKeyDown={(e) => e.key === 'Enter' && handleBegin()}
+                      autoFocus
                       style={{
-                        padding: '20px',
-                        background: 'rgba(255,255,255,0.025)',
-                        border: `1px solid ${styleData.color}33`,
-                        borderRadius: '10px',
+                        width: '100%',
+                        background: 'transparent',
+                        border: 'none',
+                        borderBottom: `1px solid ${styleData.color}44`,
+                        padding: '8px 0',
+                        color: 'rgba(240,232,210,0.9)',
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: '17px',
+                        outline: 'none',
+                        marginBottom: '12px',
+                        boxSizing: 'border-box',
                       }}
-                    >
-                      <input
-                        type="text"
-                        placeholder="Goal name (e.g. Run every morning)"
-                        value={goal.name}
-                        onChange={(e) => {
-                          const next = [...goals]
-                          next[i] = { ...next[i], name: e.target.value }
-                          setGoals(next)
-                        }}
-                        style={{
-                          width: '100%',
-                          background: 'transparent',
-                          border: 'none',
-                          borderBottom: `1px solid ${styleData.color}44`,
-                          padding: '8px 0',
-                          color: 'rgba(240,232,210,0.9)',
-                          fontFamily: "'Cormorant Garamond', serif",
-                          fontSize: '17px',
-                          outline: 'none',
-                          marginBottom: '12px',
-                          boxSizing: 'border-box',
-                        }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Why does this matter to you? (optional)"
-                        value={goal.reason}
-                        onChange={(e) => {
-                          const next = [...goals]
-                          next[i] = { ...next[i], reason: e.target.value }
-                          setGoals(next)
-                        }}
-                        style={{
-                          width: '100%',
-                          background: 'transparent',
-                          border: 'none',
-                          borderBottom: '1px solid rgba(240,232,210,0.1)',
-                          padding: '8px 0',
-                          color: 'rgba(240,232,210,0.5)',
-                          fontFamily: "'IM Fell English', serif",
-                          fontStyle: 'italic',
-                          fontSize: '14px',
-                          outline: 'none',
-                          marginBottom: '16px',
-                          boxSizing: 'border-box',
-                        }}
-                      />
+                    />
+                    <input
+                      type="text"
+                      placeholder="Why does this matter to you? (optional)"
+                      value={goalEntry.reason}
+                      onChange={(e) => setGoalEntry({ ...goalEntry, reason: e.target.value })}
+                      style={{
+                        width: '100%',
+                        background: 'transparent',
+                        border: 'none',
+                        borderBottom: '1px solid rgba(240,232,210,0.1)',
+                        padding: '8px 0',
+                        color: 'rgba(240,232,210,0.5)',
+                        fontFamily: "'IM Fell English', serif",
+                        fontStyle: 'italic',
+                        fontSize: '14px',
+                        outline: 'none',
+                        marginBottom: '16px',
+                        boxSizing: 'border-box',
+                      }}
+                    />
 
-                      {/* Planet style picker */}
-                      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                        {GOAL_PLANET_STYLES.map((s) => (
-                          <button
-                            key={s.id}
-                            onClick={() => {
-                              const next = [...goals]
-                              next[i] = { ...next[i], style: s.id as GoalPlanetStyle }
-                              setGoals(next)
-                            }}
-                            title={s.label}
-                            style={{
-                              width: '28px',
-                              height: '28px',
-                              borderRadius: '50%',
-                              background: s.color,
-                              border: goal.style === s.id
-                                ? `2px solid rgba(240,232,210,0.8)`
-                                : '2px solid transparent',
-                              cursor: 'pointer',
-                              boxShadow: goal.style === s.id ? `0 0 8px ${s.color}88` : 'none',
-                            }}
-                          />
-                        ))}
-                      </div>
+                    {/* Planet colour picker */}
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                      {GOAL_PLANET_STYLES.map((s) => (
+                        <button
+                          key={s.id}
+                          onClick={() => setGoalEntry({ ...goalEntry, style: s.id as GoalPlanetStyle })}
+                          title={s.label}
+                          style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '50%',
+                            background: s.color,
+                            border: goalEntry.style === s.id
+                              ? `2px solid rgba(240,232,210,0.8)`
+                              : '2px solid transparent',
+                            cursor: 'pointer',
+                            boxShadow: goalEntry.style === s.id ? `0 0 8px ${s.color}88` : 'none',
+                          }}
+                        />
+                      ))}
                     </div>
-                  )
-                })}
-              </div>
+                  </div>
+                )
+              })()}
 
-              <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap' }}>
-                {goals.length < 5 && (
-                  <button
-                    onClick={handleAddGoal}
-                    style={{
-                      padding: '10px 24px',
-                      background: 'transparent',
-                      border: '1px solid rgba(240,232,210,0.15)',
-                      borderRadius: '24px',
-                      color: 'rgba(240,232,210,0.4)',
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    + Add another planet
-                  </button>
-                )}
+              <motion.button
+                onClick={handleBegin}
+                disabled={!goalEntry.name.trim()}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  padding: '12px 36px',
+                  background: 'rgba(244,208,63,0.1)',
+                  border: '1px solid rgba(244,208,63,0.5)',
+                  borderRadius: '30px',
+                  color: 'rgba(244,208,63,0.9)',
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: '16px',
+                  cursor: goalEntry.name.trim() ? 'pointer' : 'not-allowed',
+                  opacity: goalEntry.name.trim() ? 1 : 0.4,
+                }}
+              >
+                Begin my universe
+              </motion.button>
 
-                <motion.button
-                  onClick={handleBegin}
-                  disabled={goals.every((g) => !g.name.trim())}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  style={{
-                    padding: '12px 36px',
-                    background: 'rgba(244,208,63,0.1)',
-                    border: '1px solid rgba(244,208,63,0.5)',
-                    borderRadius: '30px',
-                    color: 'rgba(244,208,63,0.9)',
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: '16px',
-                    cursor: goals.some((g) => g.name.trim()) ? 'pointer' : 'not-allowed',
-                    opacity: goals.some((g) => g.name.trim()) ? 1 : 0.4,
-                  }}
-                >
-                  Begin my universe
-                </motion.button>
-              </div>
+              <p style={{
+                marginTop: '16px',
+                color: 'rgba(240,232,210,0.25)',
+                fontSize: '13px',
+                fontStyle: 'italic',
+                fontFamily: "'IM Fell English', serif",
+              }}>
+                You can add up to 4 more planets from the Goals tab at any time.
+              </p>
             </motion.div>
           </motion.div>
         )}

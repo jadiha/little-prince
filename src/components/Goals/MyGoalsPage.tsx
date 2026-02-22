@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAppStore, selectIsGoalTendedToday, selectDaysSinceTended } from '@/store/appStore'
+import { useAppStore, selectIsGoalTendedToday, selectDaysSinceTended, selectCurrentStreak } from '@/store/appStore'
+import { format } from 'date-fns'
 import { GOAL_PLANET_STYLES, getStyleById } from '@/data/goalPlanetStyles'
 import type { Goal } from '@/types'
 import type { GoalPlanetStyle } from '@/types'
@@ -267,6 +268,77 @@ function GoalCard({ goal }: { goal: Goal }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
+function StatsRow() {
+  const stars = useAppStore((s) => s.stars)
+  const goals = useAppStore((s) => s.goals)
+  const streak = useAppStore(selectCurrentStreak)
+
+  // 7-day tending rate
+  const sevenDaysAgo = new Date()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+  const cutoff = format(sevenDaysAgo, 'yyyy-MM-dd')
+  const totalPossible = goals.length * 7
+  const totalLogged = stars.filter((s) => s.date >= cutoff).length
+  const rate = totalPossible > 0 ? Math.round((totalLogged / totalPossible) * 100) : 0
+
+  const statStyle = {
+    display: 'flex' as const,
+    flexDirection: 'column' as const,
+    alignItems: 'center' as const,
+    gap: '4px',
+  }
+  const numberStyle = {
+    color: 'rgba(244,208,63,0.9)',
+    fontSize: '28px',
+    fontFamily: "'Cormorant Garamond', serif",
+    fontWeight: 500,
+    lineHeight: 1,
+  }
+  const labelStyle = {
+    color: 'rgba(240,232,210,0.35)',
+    fontSize: '11px',
+    fontFamily: "'Cormorant Garamond', serif",
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase' as const,
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+      style={{
+        display: 'flex',
+        gap: '0',
+        marginBottom: '36px',
+        background: 'rgba(244,208,63,0.04)',
+        border: '1px solid rgba(244,208,63,0.12)',
+        borderRadius: '14px',
+        overflow: 'hidden',
+      }}
+    >
+      {[
+        { value: stars.length, label: 'total stars' },
+        { value: streak, label: streak === 1 ? 'day streak' : 'day streak' },
+        { value: `${rate}%`, label: '7-day rate' },
+      ].map((stat, i) => (
+        <div
+          key={i}
+          style={{
+            ...statStyle,
+            flex: 1,
+            padding: '20px 12px',
+            borderRight: i < 2 ? '1px solid rgba(244,208,63,0.08)' : 'none',
+          }}
+        >
+          <span style={numberStyle}>{stat.value}</span>
+          <span style={labelStyle}>{stat.label}</span>
+        </div>
+      ))}
+    </motion.div>
+  )
+}
+
 export default function MyGoalsPage() {
   const goals = useAppStore((s) => s.goals)
   const userName = useAppStore((s) => s.userName)
@@ -320,6 +392,9 @@ export default function MyGoalsPage() {
             Each one orbits your asteroid. Each one waits for you to return.
           </p>
         </motion.div>
+
+        {/* Stats row — shown when there are goals */}
+        {goals.length > 0 && <StatsRow />}
 
         {/* Empty state */}
         {goals.length === 0 && !showForm && (

@@ -34,6 +34,7 @@ interface AppState {
   princeMessage: string | null
   isPrinceTyping: boolean
   checkInGoalId: string | null   // which goal's check-in modal is open
+  hoveredStar: { goalId: string; date: string } | null
 }
 
 // ─── Actions ──────────────────────────────────────────────────────────────────
@@ -64,6 +65,7 @@ interface AppActions {
   setIsPrinceTyping: (v: boolean) => void
   openCheckIn: (goalId: string) => void
   closeCheckIn: () => void
+  setHoveredStar: (star: { goalId: string; date: string } | null) => void
 }
 
 type AppStore = AppState & AppActions
@@ -87,6 +89,7 @@ export const useAppStore = create<AppStore>()(
       princeMessage: null,
       isPrinceTyping: false,
       checkInGoalId: null,
+      hoveredStar: null,
 
       // ── Goal actions ───────────────────────────────────────────────────────
       addGoal: (name, planetStyle, reason) => {
@@ -193,6 +196,7 @@ export const useAppStore = create<AppStore>()(
       setIsPrinceTyping: (v) => set({ isPrinceTyping: v }),
       openCheckIn: (goalId) => set({ checkInGoalId: goalId }),
       closeCheckIn: () => set({ checkInGoalId: null }),
+      setHoveredStar: (star) => set({ hoveredStar: star }),
     }),
     {
       name: 'little-prince-storage',
@@ -260,4 +264,26 @@ export const selectDaysSinceTended = (goalId: string) => (s: AppStore) => {
   if (lastLog.date === today) return 0
   const diffMs = new Date().getTime() - new Date(lastLog.date).getTime()
   return Math.floor(diffMs / (1000 * 60 * 60 * 24))
+}
+
+// Count consecutive days (working backwards from today) with at least one star logged
+export const selectCurrentStreak = (s: AppStore): number => {
+  const { stars } = s
+  if (stars.length === 0) return 0
+
+  const starDates = new Set(stars.map((st) => st.date))
+  let streak = 0
+  const cursor = new Date()
+
+  while (true) {
+    const dateStr = format(cursor, 'yyyy-MM-dd')
+    if (starDates.has(dateStr)) {
+      streak++
+      cursor.setDate(cursor.getDate() - 1)
+    } else {
+      break
+    }
+  }
+
+  return streak
 }

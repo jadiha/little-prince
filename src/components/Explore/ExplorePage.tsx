@@ -181,6 +181,63 @@ function PlanetOverview({
   )
 }
 
+// ─── Character illustration with image or styled fallback ─────────────────────
+function CharacterIllustration({ planet }: { planet: Planet }) {
+  const [imgLoaded, setImgLoaded] = useState(false)
+  const [imgError, setImgError] = useState(false)
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, delay: 0.05 }}
+      style={{ marginBottom: '32px', display: 'flex', justifyContent: 'center' }}
+    >
+      {!imgError ? (
+        <img
+          src={`/assets/characters/${planet.id}.jpg`}
+          alt={planet.characterName}
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgError(true)}
+          style={{
+            maxHeight: '180px',
+            maxWidth: '100%',
+            objectFit: 'contain',
+            mixBlendMode: 'multiply',
+            filter: 'sepia(0.25) saturate(1.3)',
+            opacity: imgLoaded ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+            borderRadius: '8px',
+          }}
+        />
+      ) : (
+        /* Styled illustrated placeholder when no image file exists */
+        <div style={{
+          width: '140px',
+          height: '140px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle at 35% 30%, ${planet.color}55 0%, ${planet.color}22 50%, transparent 100%)`,
+          border: `1px solid ${planet.color}44`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: `0 0 40px ${planet.color}22`,
+        }}>
+          <span style={{
+            fontFamily: "'IM Fell English', serif",
+            fontSize: '52px',
+            color: planet.color,
+            opacity: 0.7,
+            lineHeight: 1,
+          }}>
+            {planet.characterName.charAt(planet.characterName.indexOf(' ') + 1) || planet.characterName.charAt(0)}
+          </span>
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
 // ─── Detail: entered a planet ─────────────────────────────────────────────────
 function PlanetDetail({
   planet,
@@ -277,6 +334,9 @@ function PlanetDetail({
         className="page-sidebar-inset"
         style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 24px 80px' }}
       >
+        {/* Character illustration — loads from /assets/characters/{id}.jpg if available */}
+        <CharacterIllustration planet={planet} />
+
         {/* Planet orb */}
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}

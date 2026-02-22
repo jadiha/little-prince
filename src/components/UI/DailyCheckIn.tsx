@@ -91,10 +91,11 @@ export default function DailyCheckIn() {
                   </h2>
 
                   {isTendedToday ? (
-                    /* Already tended */
+                    /* Already tended today */
                     <div className="text-center py-4">
+                      <div className="text-2xl mb-2">✦</div>
                       <p className="font-serif text-ivory/70 text-base leading-relaxed">
-                        Your rose is tended today.
+                        A star shines for you today.
                       </p>
                       <p className="font-handwriting text-ivory/40 text-sm mt-2 italic">
                         Come back tomorrow.
@@ -102,9 +103,9 @@ export default function DailyCheckIn() {
                     </div>
                   ) : (
                     <>
-                      {/* Last tended */}
+                      {/* Last visit */}
                       <p className="text-center text-ivory/40 text-xs font-serif mb-5">
-                        last tended {lastLogText}
+                        last visit {lastLogText}
                       </p>
 
                       {/* Optional note */}

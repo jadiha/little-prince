@@ -24,7 +24,7 @@ export default function UniverseCanvas() {
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.1,
       }}
-      onCreated={(state) => state.gl.setClearColor(new THREE.Color('#07051a'))}
+      onCreated={(state) => state.gl.setClearColor(new THREE.Color('#06051f'))}
       shadows
       dpr={[1, 2]}
     >
@@ -36,17 +36,19 @@ export default function UniverseCanvas() {
       <SceneController />
 
       {/* Lighting */}
-      <ambientLight color="#3d1f7a" intensity={0.7} />
+      <ambientLight color="#4a2a8a" intensity={0.8} />
       <directionalLight
         position={[5, 8, 5]}
-        color="#e8d5ff"
-        intensity={2.0}
+        color="#ffe8c0"
+        intensity={1.8}
         castShadow
       />
-      <pointLight position={[-8, 6, -4]} color="#6633cc" intensity={0.8} distance={40} />
+      <pointLight position={[-8, 6, -4]} color="#7744cc" intensity={0.6} distance={40} />
+      {/* Warm gold light near asteroid for illustrated warmth */}
+      <pointLight position={[0, 2, 2]} color="#f4d03f" intensity={0.4} distance={8} />
 
       {/* Background stars */}
-      <StarParticles count={800} />
+      <StarParticles count={1000} />
 
       {/* User's earned stars */}
       <LoggedStars />
@@ -76,9 +78,9 @@ export default function UniverseCanvas() {
       {/* Post-processing */}
       <EffectComposer>
         <Bloom
-          luminanceThreshold={0.25}
-          luminanceSmoothing={0.2}
-          intensity={2.2}
+          luminanceThreshold={0.45}
+          luminanceSmoothing={0.3}
+          intensity={1.0}
         />
         <Vignette eskil={false} offset={0.25} darkness={0.6} />
       </EffectComposer>

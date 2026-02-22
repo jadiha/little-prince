@@ -40,7 +40,7 @@ export default function StarParticles({ count = 800 }: Props) {
     if (mesh1Ref.current) {
       mesh1Ref.current.rotation.y += 0.0004
       const mat = mesh1Ref.current.material as THREE.PointsMaterial
-      mat.opacity = 0.75 + Math.sin(t * 0.4) * 0.15
+      mat.opacity = 0.9 + Math.sin(t * 0.4) * 0.1
     }
     if (mesh2Ref.current) {
       mesh2Ref.current.rotation.y -= 0.0003
@@ -56,12 +56,12 @@ export default function StarParticles({ count = 800 }: Props) {
 
   return (
     <>
-      {/* Near stars — brightest */}
+      {/* Near stars — brightest, warm gold-white */}
       <points ref={mesh1Ref}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[pos1, 3]} />
         </bufferGeometry>
-        <pointsMaterial color="#fffef5" sizeAttenuation transparent opacity={0.75} size={0.055} />
+        <pointsMaterial color="#ffd580" sizeAttenuation transparent opacity={0.9} size={0.058} />
       </points>
 
       {/* Mid stars */}
